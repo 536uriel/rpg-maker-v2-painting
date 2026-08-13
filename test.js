@@ -801,6 +801,18 @@ document.getElementById("changeDrawingState").addEventListener("click", e => {
     board.drawingState = !board.drawingState;
 });
 
+//there is somtimes bugs -> if body not defined
+try {
+    body.addEventListener('pointermove', e => {
+        if (board.drawingState) {
+            e.preventDefault();
+        }
+    });
+
+} catch (err) {
+    console.log(err);
+}
+
 
 function switchElementVisability(elem) {
     let displayData = elem.getAttribute("style-display-data");
