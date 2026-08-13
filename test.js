@@ -796,8 +796,9 @@ sprite.set_sprites().then(() => {
 
 
 //
-document.getElementById("clearDrawingsBtn").addEventListener("click", e => {
+document.getElementById("changeDrawingState").addEventListener("click", e => {
     board.drawingCanvas.getContext('2d').clearRect(0, 0, board.drawingCanvas.width, board.drawingCanvas.height);
+    board.drawingState = !board.drawingState;
 });
 
 

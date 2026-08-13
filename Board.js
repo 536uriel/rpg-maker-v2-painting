@@ -12,6 +12,7 @@ export default class Board {
         //drawingCanvas
         this.drawingCanvas = document.createElement('canvas');
         this.drawing = false;
+        this.drawingState = false;
         this.lastDrawingPos = { x: 0, y: 0 };
 
         //initiate grid:
@@ -181,6 +182,11 @@ export default class Board {
 
 
         canvas.addEventListener('pointerdown', e => {
+            if (!this.drawingState) {
+                e.preventDefault();
+                return;
+            }
+
             this.drawing = true;
             this.lastDrawingPos.x = mousePos.x + camera.x;
             this.lastDrawingPos.y = mousePos.y - camera.y;
@@ -190,7 +196,7 @@ export default class Board {
         });
 
         canvas.addEventListener('pointermove', e => {
-            if (!this.drawing) {
+            if (!this.drawing || !this.drawingState) {
                 e.preventDefault();
                 return;
             }
