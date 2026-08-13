@@ -809,6 +809,13 @@ try {
         }
     });
 
+    //fix testing for touch devices
+    body.addEventListener('touchmove', (e) => {
+        if (board.drawingState) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
 } catch (err) {
     console.log(err);
 }
