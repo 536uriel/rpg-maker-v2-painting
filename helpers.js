@@ -341,3 +341,11 @@ export async function missionsPopup(missionNumber = 1, missionDetails = "", call
 
 };
 
+export function isTouchDevice() {
+  return (
+    navigator.maxTouchPoints > 0 || 
+    navigator.msMaxTouchPoints > 0 || 
+    'ontouchstart' in window
+  );
+}
+

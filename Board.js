@@ -1,4 +1,5 @@
 import Rect from "./Rect.js";
+import { isTouchDevice } from "./helpers.js";
 
 export default class Board {
     constructor(canvas, unitSize) {
@@ -180,8 +181,18 @@ export default class Board {
         function drawDot(x, y) { ctxcan.fillStyle = '#111'; ctxcan.beginPath(); ctxcan.arc(x, y, 3, 0, Math.PI * 2); ctxcan.fill(); }
         function drawLine(x1, y1, x2, y2) { ctxcan.strokeStyle = '#111'; ctxcan.lineWidth = 6; ctxcan.lineCap = 'round'; ctxcan.beginPath(); ctxcan.moveTo(x1, y1); ctxcan.lineTo(x2, y2); ctxcan.stroke(); }
 
+        var pointerOrToutch_down = "pointerdown";
+        var pointerOrToutch_move = "pointermove";
+        var pointerOrToutch_up = "pointerup";
 
-        canvas.addEventListener('pointerdown', e => {
+        if (isTouchDevice()) {
+            console.log("Touch capabilities detected!");
+            pointerOrToutch_down = "touchstart";
+            pointerOrToutch_move = "touchmove";
+            pointerOrToutch_up = "touchend";
+        }
+
+        canvas.addEventListener(pointerOrToutch_down, e => {
             if (!this.drawingState) {
                 e.preventDefault();
                 return;
@@ -195,18 +206,18 @@ export default class Board {
 
         });
 
-        canvas.addEventListener('pointermove', e => {
+        canvas.addEventListener(pointerOrToutch_move, e => {
             if (!this.drawing || !this.drawingState) {
                 e.preventDefault();
                 return;
             }
-                
+
             drawLine(this.lastDrawingPos.x, this.lastDrawingPos.y, mousePos.x + camera.x, mousePos.y - camera.y);
             this.lastDrawingPos.x = mousePos.x + camera.x;
             this.lastDrawingPos.y = mousePos.y - camera.y;
         });
 
-        window.addEventListener('pointerup', e => {
+        window.addEventListener(pointerOrToutch_up, e => {
             this.drawing = false;
         });
 

@@ -8,7 +8,7 @@ import Board from "./Board.js";
 import { Sprite } from "./Sprite.js";
 import Camera from "./Camera.js";
 import Npc from "./Npc.js";
-import { rotate_in_center, popup } from "./helpers.js";
+import { rotate_in_center, popup, isTouchDevice } from "./helpers.js";
 import { poolWithBridge, example2, example3, example4 } from "./examples.js";
 import { BlocksComponent } from "./blocks-editor-component.js";
 import { setWindowsCommandsAfterSetSprites, setWindowsCommandsInsideUpdate } from "./WindowsCommands.js";
@@ -713,6 +713,20 @@ sprite.set_sprites().then(() => {
         mousePos.y = e.clientY - screenRect.top
 
     });
+
+    // Touch implementation
+    try {
+        if (isTouchDevice()) {
+            document.addEventListener('touchmove', (e) => {
+                // Access the first active touch point
+                const touch = e.targetTouches[0];
+                mousePos.x = touch.clientX - screenRect.left;
+                mousePos.y = touch.clientY - screenRect.top;
+            });
+        }
+    } catch (err) {
+        console.log(err)
+    }
 
     //@new drawOnCanvas code
     let drawOnCanvas = board.drawOnCanvas(canvas, mousePos, camera);
